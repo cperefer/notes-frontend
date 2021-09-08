@@ -1,13 +1,15 @@
-import Togglable from "./Togglable";
+import Togglable from './Togglable/Togglable';
+import PropTypes from 'proptypes';
 
 export default function LoginForm (props) {
   return (
-    <Togglable buttonLabel='login'>
+    <Togglable buttonLabel='Show login'>
       <form onSubmit={props.handleSubmit}>
         <div>
           <input
             type='text'
-            value={props.inputusername}
+            value={props.username}
+            id='inputLogin'
             name='username'
             placeholder='username'
             onChange={props.handleUsernameChange}
@@ -23,9 +25,17 @@ export default function LoginForm (props) {
           />
         </div>
         <div>
-          <button>Login</button>
+          <button id='formLoginButton'>Login</button>
         </div>
       </form>
     </Togglable>
   );
 }
+
+LoginForm.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+  handleUsernameChange: PropTypes.func.isRequired,
+  password: PropTypes.string.isRequired,
+  handlePasswordChange: PropTypes.func.isRequired,
+};

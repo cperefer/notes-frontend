@@ -1,13 +1,12 @@
-import "./styles.css";
-import { useEffect, useState } from "react";
-import Note from "./components/Note";
-import Notification from "./components/Notification";
-import noteService from "./services/notes";
-import loginService from "./services/login";
-import config from "./config/config.js"; 
-import LoginForm from "./components/LoginForm";
-import Togglable from "./components/Togglable";
-import NoteForm from "./components/NoteForm";
+import './styles.css';
+import { useEffect, useState } from 'react';
+import Note from './components/Note/Note';
+import Notification from './components/Notification';
+import noteService from './services/notes';
+import loginService from './services/login';
+import config from './config/config.js';
+import LoginForm from './components/LoginForm';
+import NoteForm from './components/NoteForm';
 
 export default function App() {
   const [notes, setNotes] = useState([]);
@@ -39,7 +38,7 @@ export default function App() {
     setUser(null);
     noteService.setToken(null);
     window.localStorage.removeItem(config.LOGGED_USER_STORAGE);
-  }
+  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -51,7 +50,7 @@ export default function App() {
 
       noteService.setToken(user.token);
       window.localStorage.setItem(
-        config.LOGGED_USER_STORAGE, JSON.stringify(user),
+        config.LOGGED_USER_STORAGE, JSON.stringify(user)
       );
       setUser(user);
       setUsername('');
@@ -59,7 +58,7 @@ export default function App() {
     } catch (error) {
       setErrorMessage('Wrong credentials');
       setTimeout(() => {
-        setErrorMessage('')
+        setErrorMessage('');
       }, 5000);
     }
   };
@@ -71,10 +70,10 @@ export default function App() {
         setNotes((prevNotes) => prevNotes.concat(data));
         setErrorMessage('Note added');
         setTimeout(() => {
-          setErrorMessage('')
+          setErrorMessage('');
         }, 5000);
       });
-  }; 
+  };
 
   return (
     <div>
@@ -83,26 +82,28 @@ export default function App() {
       {
         (user)
           ? <NoteForm
-              handleLogout={handleLogout}
-              addNote={addNote}
-            />
+            handleLogout={handleLogout}
+            addNote={addNote}
+          />
           : <LoginForm
-              username={username}
-              password={password}
-              handleUsernameChange={
-                ({target}) => setUsername(target.value)
-              }
-              handlePasswordChange={
-                ({target}) => setPassword(target.value)
-              }
-              handleSubmit={handleLogin}
-            />
+            username={username}
+            password={password}
+            handleUsernameChange={
+              ({target}) => setUsername(target.value)
+            }
+            handlePasswordChange={
+              ({target}) => setPassword(target.value)
+            }
+            handleSubmit={handleLogin}
+          />
       }
 
       <div>
-        {notes.map((note) => (
-          <Note key={note.id} note={note} />
-        ))}
+        <ul>
+          {notes.map((note) => (
+            <Note key={note.id} note={note} />
+          ))}
+        </ul>
       </div>
       <br />
     </div>
