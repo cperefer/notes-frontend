@@ -5,10 +5,12 @@ export const Note = ({ note, toggleImportance }) => {
 
   return (
     <li>
-      <div>
-        {note.content}
-      </div>
-      <button onClick={toggleImportance}>{label}</button>
+      {note.content}
+      <button
+        onClick={() => toggleImportance(note)}
+      >
+        {label}
+      </button>
     </li>
   );
 };

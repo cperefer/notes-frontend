@@ -13,12 +13,12 @@ export default function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     noteService.getAll().then((notes) => {
       if (!notes.length) {
-        setErrorMessage('No notes to show');
+        setMessage('No notes to show');
       } else {
         setNotes(notes);
       }
@@ -56,9 +56,9 @@ export default function App() {
       setUsername('');
       setPassword('');
     } catch (error) {
-      setErrorMessage('Wrong credentials');
+      setMessage('Error: Wrong credentials');
       setTimeout(() => {
-        setErrorMessage('');
+        setMessage('');
       }, 5000);
     }
   };
@@ -68,17 +68,32 @@ export default function App() {
       .create(noteObject)
       .then((data) => {
         setNotes((prevNotes) => prevNotes.concat(data));
-        setErrorMessage('Note added');
+        setMessage('Note added');
         setTimeout(() => {
-          setErrorMessage('');
+          setMessage('');
         }, 5000);
+      });
+  };
+
+  const toggleImportance = (note) => {
+    note.important = !note.important;
+    noteService
+      .update(note.id, note)
+      .then(() => {
+        noteService.getAll().then((notes) => {
+          if (!notes.length) {
+            setMessage('No notes to show');
+          } else {
+            setNotes(notes);
+          }
+        });
       });
   };
 
   return (
     <div>
       <h1>Notes</h1>
-      <Notification message={errorMessage} />
+      <Notification message={message} />
       {
         (user)
           ? <NoteForm
@@ -101,7 +116,13 @@ export default function App() {
       <div>
         <ul>
           {notes.map((note) => (
-            <Note key={note.id} note={note} />
+            <Note
+              key={note.id}
+              note={note}
+              toggleImportance={
+                (note) => toggleImportance(note)
+              }
+            />
           ))}
         </ul>
       </div>

@@ -25,7 +25,12 @@ const create = (newNote) => {
 };
 
 const update = (id, newNote) => {
-  const request = axios.put(`${url}/${id}`, newNote);
+  const config = {
+    headers: {
+      Authorization: token,
+    }
+  };
+  const request = axios.put(`${url}/${id}`, newNote, config);
   return request.then((response) => response.data);
 };
 

@@ -15,6 +15,7 @@ export default function NoteForm({handleLogout, addNote}) {
 
     const noteObject = {
       content: newNote,
+      important: false,
     };
 
     addNote(noteObject);
@@ -33,7 +34,7 @@ export default function NoteForm({handleLogout, addNote}) {
             placeholder='Write your note here'
             onChange={handleChange}
             value={newNote} />
-          <button>Crear Nota</button>
+          <button>Create new note</button>
         </form>
       </div>
       <div><button onClick={handleLogout}>Logout</button></div>
